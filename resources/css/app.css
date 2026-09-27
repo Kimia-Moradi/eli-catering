@@ -1,0 +1,386 @@
+  /* ============================
+     DESIGN TOKENS — from spec §3.1 / §3.2. Change once here, not per-selector.
+     ============================ */
+  :root {
+    --color-primary-green: #556B2F;
+    --color-primary-green-dark: #46592680;
+    --color-bg: #F7F3E9;
+    --color-brown: #A67C52;
+    --color-charcoal: #2F2F2F;
+    --color-light-green: #D8E2C4;
+    --color-white: #FFFFFF;
+
+    --font-fa-display: 'Vazirmatn', 'Peyda', sans-serif; /* stand-in for Peyda Bold */
+    --font-fa-body: 'Vazirmatn', 'IRANSansX', sans-serif; /* stand-in for IRANSansX */
+    --font-en-display: 'Playfair Display', serif;
+    --font-en-body: 'Poppins', sans-serif;
+
+    --radius-sm: 10px;
+    --radius-md: 20px;
+    --radius-full: 999px;
+
+    --space-1: .5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2.25rem;
+    --space-5: 3.5rem;
+    --space-6: 5rem;
+
+    --container: 1180px;
+    --shadow-soft: 0 10px 30px rgba(47, 47, 47, .08);
+    --shadow-btn: 0 6px 16px rgba(85, 107, 47, .28);
+
+    --ease: cubic-bezier(.4, 0, .2, 1);
+  }
+
+  /* ============================
+     RESET & BASE
+     ============================ */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-charcoal);
+    font-family: var(--font-fa-body);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3, p { margin: 0; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  .icon { width: 1.25em; height: 1.25em; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2.5px solid var(--color-brown);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
+
+  .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--space-3); }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .en { font-family: var(--font-en-body); direction: ltr; unicode-bidi: isolate; }
+
+
+  /* ============================
+     BUTTONS
+     ============================ */
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .85rem 1.6rem; border-radius: var(--radius-full);
+    font-family: var(--font-fa-body); font-weight: 600; font-size: .95rem;
+    transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+    white-space: nowrap;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn--primary { background: var(--color-primary-green); color: var(--color-white); box-shadow: var(--shadow-btn); }
+  .btn--primary:hover { box-shadow: 0 10px 22px rgba(85, 107, 47, .38); }
+  .btn--outline { background: var(--color-white); color: var(--color-primary-green); border: 1.5px solid var(--color-light-green); }
+  .btn--outline:hover { border-color: var(--color-primary-green); }
+  .btn--sm { padding: .6rem 1.2rem; font-size: .85rem; }
+
+  /* ============================
+     SITE HEADER  — §7.2, §8.1
+     Logo stays physically left / actions stay physically right, per the spec's explicit
+     instruction not to mechanically mirror this element for RTL. Achieved with
+     row-reverse rather than fighting the language direction.
+     ============================ */
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(247, 243, 233, .92); backdrop-filter: blur(8px);
+    border-block-end: 1px solid rgba(85, 107, 47, .1);
+  }
+  .header-container {
+    max-width: var(--container); margin-inline: auto; padding-inline: var(--space-3);
+    display: flex; flex-direction: row-reverse; align-items: center; justify-content: space-between;
+    min-height: 76px; gap: var(--space-3);
+  }
+  .brand { display: flex; align-items: center; gap: .6rem; }
+  .logo { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; }
+  .brand-wordmark { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-wordmark strong { font-family: var(--font-en-display); font-style: italic; font-size: 1.15rem; color: var(--color-primary-green); }
+  .brand-wordmark span { font-family: var(--font-en-body); font-size: .55rem; letter-spacing: .18em; color: var(--color-brown); }
+
+  .primary-navigation { display: flex; align-items: center; gap: var(--space-4); }
+  .nav-link { font-size: .95rem; font-weight: 500; color: var(--color-charcoal); padding-block: .35rem; border-block-end: 2px solid transparent; transition: color .15s var(--ease), border-color .15s var(--ease); }
+  .nav-link:hover { color: var(--color-primary-green); }
+  .nav-link--active { color: var(--color-primary-green); border-block-end-color: var(--color-primary-green); font-weight: 600; }
+
+  .header-actions .phone-order-button .icon { width: 1.05em; height: 1.05em; }
+  .nav-toggle { display: none; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: var(--radius-sm); }
+  .nav-toggle .icon { width: 22px; height: 22px; }
+  .nav-toggle .icon-close { display: none; }
+  .nav-toggle[aria-expanded="true"] .icon-menu { display: none; }
+  .nav-toggle[aria-expanded="true"] .icon-close { display: block; }
+
+  .mobile-nav-panel { display: none; }
+
+  @media (max-width: 860px) {
+    .primary-navigation, .header-actions .phone-order-button { display: none; }
+    .nav-toggle { display: inline-flex; }
+    .mobile-nav-panel {
+      display: block; max-height: 0; overflow: hidden; background: var(--color-bg);
+      border-block-end: 1px solid rgba(85, 107, 47, .12);
+      transition: max-height .28s var(--ease);
+    }
+    .mobile-nav-panel.is-open { max-height: 320px; }
+    .mobile-nav-panel .container { display: flex; flex-direction: column; gap: var(--space-2); padding-block: var(--space-3); }
+    .mobile-nav-panel .nav-link { border-block-end: none; }
+    .mobile-nav-panel .phone-order-button { align-self: flex-start; margin-block-start: .3rem; }
+  }
+
+  /* ============================
+     HERO — §7.2, §8.2
+     Same left/right override as the header: hero-media first in the DOM, pinned left
+     with row-reverse, hero-content pinned right.
+     ============================ */
+  .hero-section { padding-block: var(--space-6) var(--space-5); position: relative; overflow: hidden; }
+  .hero-section::before {
+    content: ""; position: absolute; inset-inline-end: -120px; inset-block-start: -80px;
+    width: 340px; height: 340px; border-radius: 50%;
+    background: radial-gradient(circle, var(--color-light-green) 0%, transparent 70%);
+    opacity: .6; z-index: 0;
+  }
+  .hero-container {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: row-reverse; align-items: center; gap: var(--space-5);
+  }
+  .hero-media { flex: 1 1 46%; min-width: 0; }
+  .hero-image {
+    position: relative; aspect-ratio: 4 / 3.1; border-radius: var(--radius-md);
+    background:
+      radial-gradient(circle at 32% 30%, #ffffffaa 0%, transparent 45%),
+      linear-gradient(135deg, var(--color-light-green) 0%, var(--color-bg) 55%, var(--color-brown) 130%);
+    box-shadow: var(--shadow-soft);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-image .icon { width: 30%; height: 30%; stroke: var(--color-primary-green); opacity: .55; stroke-width: 1.2; }
+
+  .hero-content { flex: 1 1 50%; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); text-align: right; }
+  .hero-title {
+    font-family: var(--font-fa-display); font-weight: 800; color: var(--color-primary-green);
+    font-size: 2.6rem; line-height: 1.28;
+    max-width: 12ch; overflow-wrap: break-word;
+  }
+  @media (max-width: 1180px) { .hero-title { font-size: 2.1rem; } }
+  @media (max-width: 860px) { .hero-title { font-size: 1.9rem; max-width: 16ch; } }
+  .hero-description { font-size: 1.05rem; color: #4a4a44; max-width: 34ch; }
+  .hero-cta { margin-block-start: var(--space-2); }
+
+  @media (max-width: 860px) {
+    .hero-container { flex-direction: column-reverse; text-align: center; }
+    .hero-content { align-items: center; }
+    .hero-media { width: 100%; }
+  }
+
+  /* ============================
+     MENU SECTION — §7.2, §8.3, §8.4
+     Natural RTL flow (no row-reverse): first DOM child sits at the visual *right*,
+     which is exactly what's wanted — thumbnail right, name next to it, price at the
+     far left, with a dotted CSS leader line between them (no literal dot characters).
+     ============================ */
+  .menu-section { padding-block: var(--space-5); }
+  .section-heading-row { display: flex; align-items: center; justify-content: center; gap: var(--space-2); margin-block-end: var(--space-4); }
+  .section-heading-row .icon { width: 20px; height: 20px; stroke: var(--color-brown); }
+  .section-heading {
+    font-family: var(--font-fa-display); font-weight: 800; font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+    color: var(--color-primary-green); text-align: center;
+  }
+
+  .menu-list { max-width: 760px; margin-inline: auto; display: flex; flex-direction: column; gap: .9rem; }
+  .menu-item {
+    display: flex; align-items: center; gap: var(--space-2);
+    background: var(--color-white); border-radius: var(--radius-md);
+    padding: .75rem 1.1rem; box-shadow: var(--shadow-soft);
+  }
+  .menu-item__image {
+    position: relative; width: 60px; height: 60px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(150deg, var(--color-light-green), var(--color-bg));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .menu-item__image .icon { width: 44%; height: 44%; stroke: var(--color-brown); stroke-width: 1.4; }
+  .menu-item__content { flex: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem .6rem; min-width: 0; }
+  .menu-item__name { font-weight: 600; font-size: 1.02rem; white-space: nowrap; }
+  .menu-item__separator { flex: 1; border-block-end: 2px dotted var(--color-light-green); margin-block-end: .3rem; min-width: 1rem; }
+  .menu-item__price { font-family: var(--font-fa-body); font-weight: 600; color: var(--color-primary-green); white-space: nowrap; font-size: .98rem; }
+  .menu-item__price .en { font-weight: 600; }
+
+  .menu-item--unavailable { opacity: .55; }
+  .menu-item--unavailable .menu-item__image { filter: grayscale(60%); }
+  .menu-item__unavailable-tag {
+    font-size: .7rem; font-weight: 700; color: var(--color-brown);
+    border: 1px solid var(--color-brown); border-radius: var(--radius-full);
+    padding: .1rem .55rem; white-space: nowrap;
+  }
+
+  .menu-hours {
+    display: flex; align-items: center; justify-content: center; gap: .45rem;
+    margin-block-start: var(--space-3); font-size: .88rem; color: var(--color-brown);
+  }
+  .menu-hours .icon { width: 16px; height: 16px; }
+
+  @media (max-width: 480px) {
+    .menu-item { flex-wrap: wrap; }
+    .menu-item__content { flex-basis: 100%; }
+  }
+
+  /* ============================
+     ORDERING SECTION — §7.2, §8.5
+     ============================ */
+  .ordering-section { padding-block: var(--space-4); }
+  .ordering-section .container {
+    max-width: 760px; background: var(--color-white); border: 1px solid var(--color-light-green);
+    border-radius: var(--radius-md); padding: var(--space-4); text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: .6rem;
+  }
+  .ordering-section .section-heading-row { margin-block-end: 0; }
+  .order-description { color: #4a4a44; max-width: 42ch; }
+  .order-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); margin-block-start: var(--space-2); }
+
+  /* ============================
+     BENEFITS SECTION — §7.2, §8.6, updated per supplied "آیکون‌های برند" reference
+     ============================ */
+  .benefits-section { padding-block: var(--space-5); }
+  .benefits-card {
+    max-width: var(--container); margin-inline: auto;
+    background: var(--color-white); border: 1px solid var(--color-light-green);
+    border-radius: var(--radius-md); padding: var(--space-4) var(--space-3);
+  }
+  .benefits-list {
+    display: flex; flex-wrap: wrap;
+  }
+  .benefit-item {
+    flex: 1 1 20%; min-width: 0;
+    display: flex; flex-direction: column; align-items: center; gap: .6rem;
+    padding: 0 var(--space-2); text-align: center;
+    border-inline-start: 1px solid var(--color-light-green);
+  }
+  .benefit-item:first-child { border-inline-start: none; }
+  .benefit-item .icon-wrap {
+    width: 52px; height: 52px; border-radius: 50%; background: var(--color-light-green);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .benefit-item .icon { width: 24px; height: 24px; stroke: var(--color-primary-green); }
+  .benefit-item p { font-size: .88rem; font-weight: 500; line-height: 1.6; }
+
+  @media (max-width: 860px) {
+    .benefits-list { row-gap: var(--space-3); }
+    .benefit-item { flex-basis: 33.33%; border-inline-start: none; }
+  }
+  @media (max-width: 480px) {
+    .benefit-item { flex-basis: 100%; }
+  }
+
+  /* ============================
+     FOOTER — §7.2, §8.7
+     ============================ */
+  .site-footer { background: var(--color-primary-green); color: var(--color-bg); margin-block-start: var(--space-5); position: relative; overflow: hidden; }
+  .footer-container {
+    max-width: var(--container); margin-inline: auto; padding: var(--space-5) var(--space-3);
+    display: flex; flex-wrap: wrap; gap: var(--space-4); justify-content: space-between;
+    position: relative; z-index: 1;
+  }
+  .footer-qr { display: flex; align-items: center; gap: .8rem; }
+  .footer-qr__code {
+    width: 76px; height: 76px; border-radius: var(--radius-sm); background: var(--color-bg);
+    padding: 8px; flex-shrink: 0;
+  }
+  .footer-qr__code svg { width: 100%; height: 100%; }
+  .footer-qr p { font-size: .82rem; max-width: 16ch; opacity: .9; }
+
+  .footer-contact { display: flex; flex-direction: column; gap: .5rem; }
+  .footer-contact__phone { display: flex; align-items: center; gap: .5rem; font-weight: 600; font-family: var(--font-fa-body); }
+  .footer-contact__phone .icon { width: 18px; height: 18px; }
+  .footer-contact p { font-size: .82rem; opacity: .85; max-width: 28ch; }
+
+  .footer-social { display: flex; flex-direction: column; gap: .6rem; }
+  .footer-social__title { font-weight: 600; font-size: .9rem; }
+  .footer-social a { display: flex; align-items: center; gap: .5rem; font-size: .85rem; opacity: .92; }
+  .footer-social a:hover { opacity: 1; text-decoration: underline; }
+  .footer-social .icon { width: 17px; height: 17px; }
+
+  .footer-decoration { position: absolute; inset-inline-start: -30px; inset-block-end: -30px; opacity: .18; pointer-events: none; z-index: 0; }
+  .footer-decoration .icon { width: 180px; height: 180px; stroke: var(--color-bg); stroke-width: 1; }
+
+  .footer-bottom { border-block-start: 1px solid rgba(247, 243, 233, .18); text-align: center; padding: var(--space-2); font-size: .75rem; opacity: .75; position: relative; z-index: 1; }
+
+  @media (max-width: 700px) {
+    .footer-container { flex-direction: column; text-align: center; }
+    .footer-qr, .footer-social a { justify-content: center; }
+    .footer-contact { align-items: center; }
+  }
+
+  /* ============================
+     ADMIN UI — shares design tokens with the public site, simpler chrome.
+     Not part of the original spec's public-page visual reference; kept
+     deliberately plain (no decorative flourishes) since the owner uses
+     this, not customers.
+     ============================ */
+  .admin-topbar {
+    background: var(--color-primary-green); color: var(--color-bg);
+    padding: .9rem var(--space-3);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2);
+  }
+  .admin-topbar .brand-name { font-family: var(--font-fa-display); font-weight: 700; font-size: 1.05rem; }
+  .admin-nav { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+  .admin-nav a { font-size: .9rem; opacity: .85; }
+  .admin-nav a.is-active, .admin-nav a:hover { opacity: 1; text-decoration: underline; }
+  .admin-logout-btn { background: rgba(247,243,233,.15); padding: .4rem .9rem; border-radius: var(--radius-full); font-size: .82rem; }
+  .admin-logout-btn.is-active { background: rgba(247,243,233,.32); }
+
+  .admin-main { max-width: 980px; margin-inline: auto; padding: var(--space-4) var(--space-3); }
+  .admin-heading { font-family: var(--font-fa-display); font-weight: 800; color: var(--color-primary-green); font-size: 1.5rem; margin-block-end: var(--space-3); }
+  .admin-heading-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2); margin-block-end: var(--space-3); }
+  .admin-heading-row .admin-heading { margin-block-end: 0; }
+
+  .admin-status { background: var(--color-light-green); padding: .7rem 1rem; border-radius: var(--radius-sm); margin-block-end: var(--space-3); font-size: .9rem; }
+
+  .admin-card { background: var(--color-white); border: 1px solid var(--color-light-green); border-radius: var(--radius-md); padding: var(--space-3); margin-block-end: var(--space-3); overflow-x: auto; }
+
+  .admin-stats { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-block-end: var(--space-4); }
+  .admin-stat { flex: 1 1 180px; background: var(--color-white); border: 1px solid var(--color-light-green); border-radius: var(--radius-md); padding: var(--space-3); text-align: center; }
+  .admin-stat strong { display: block; font-size: 1.8rem; color: var(--color-primary-green); font-family: var(--font-fa-display); }
+  .admin-stat span { font-size: .82rem; color: var(--color-brown); }
+
+  .admin-table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: .9rem; }
+  .admin-table th, .admin-table td { padding: .65rem .5rem; border-block-end: 1px solid var(--color-light-green); text-align: start; vertical-align: middle; }
+  .admin-table th { font-weight: 600; color: var(--color-brown); font-size: .8rem; }
+  .admin-table img.thumb { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+  .admin-table .thumb-placeholder { width: 44px; height: 44px; border-radius: 50%; background: var(--color-light-green); display: inline-flex; align-items: center; justify-content: center; }
+  .admin-table .thumb-placeholder .icon { width: 20px; height: 20px; stroke: var(--color-primary-green); }
+
+  .badge { display: inline-block; font-size: .75rem; font-weight: 600; padding: .15rem .6rem; border-radius: var(--radius-full); }
+  .badge--available { background: var(--color-light-green); color: #3d5220; }
+  .badge--unavailable { background: #f3e3d3; color: var(--color-brown); }
+
+  .row-actions { display: flex; gap: .4rem; flex-wrap: wrap; }
+  .row-actions form { display: inline; }
+  .btn--tiny { padding: .35rem .75rem; font-size: .78rem; }
+  .btn--danger { background: #fff; color: #a13a3a; border: 1px solid #e2b8b8; }
+  .btn--danger:hover { background: #fdf2f2; }
+
+  .form-grid { display: grid; gap: var(--space-2); max-width: 480px; }
+  .form-field label { display: block; font-size: .88rem; font-weight: 600; margin-block-end: .35rem; }
+  .form-field input[type="text"], .form-field input[type="number"], .form-field textarea, .form-field input[type="file"] {
+    width: 100%; padding: .6rem .85rem; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--color-light-green); font: inherit; background: var(--color-bg);
+  }
+  .form-field textarea { min-height: 100px; resize: vertical; }
+  .form-field .field-error { color: #a13a3a; font-size: .8rem; margin-block-start: .3rem; }
+  .form-field .field-hint { color: var(--color-brown); font-size: .78rem; margin-block-start: .3rem; }
+  .checkbox-field { display: flex; align-items: center; gap: .5rem; font-size: .9rem; }
+  .form-actions { display: flex; gap: var(--space-2); margin-block-start: var(--space-2); }
+
+  .current-image { display: flex; align-items: center; gap: .7rem; margin-block-end: var(--space-2); font-size: .85rem; color: var(--color-brown); }
+  .current-image img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+
+  .empty-state { text-align: center; padding: var(--space-4); color: var(--color-brown); }
+
+  .order-input { width: 64px; padding: .4rem .5rem; border-radius: var(--radius-sm); border: 1.5px solid var(--color-light-green); font: inherit; text-align: center; }

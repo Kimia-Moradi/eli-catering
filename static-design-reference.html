@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<!--
+  ============================================================
+  EDIT-ME CHECKLIST
+  Everything listed here is placeholder content. Each spot is
+  also marked inline — search this file for "EDIT:" to jump
+  to each one. Once these are real, the front-end is done.
+  ============================================================
+
+  IMAGES (currently placeholder circles/gradients, not photos)
+    - Logo                 -> search "EDIT: logo"
+    - Hero photo            -> search "EDIT: hero photo"
+    - 5x menu item photos   -> search "EDIT: menu photo"
+    - QR code               -> search "EDIT: qr" (generate a real one once
+                                the live URL exists; current pattern is
+                                decorative only, not scannable)
+    - Favicon (optional)    -> matches the placeholder logo; low priority
+
+  CONTACT INFO
+    - Phone number (tel:)   -> search "EDIT: phone" (4 places: 3 links +
+                                1 footer display, all identical right now)
+    - WhatsApp number       -> search "EDIT: whatsapp" (2 places) - kept
+                                separate from the phone number on purpose;
+                                only identical right now because both are
+                                placeholders. Set independently if they differ.
+    - Instagram handle+link -> search "EDIT: instagram" (currently href="#")
+    - Order hours           -> search "EDIT: hours" - the source spec text
+                                said "2 AM", which didn't fit a 10 AM
+                                opening, so this was corrected to "2 PM"
+                                as a guess. CONFIRM THE REAL HOURS.
+
+  FONTS (not a simple text edit - needs real licensed font files)
+    - Spec calls for Peyda Bold + IRANSansX. Vazirmatn (free, open-source)
+      is standing in for both for now. Once you have the licensed files
+      or a web-font kit link: replace the Google Fonts <link> below, and
+      the --font-fa-display / --font-fa-body variables near the top of
+      the <style> block. Nothing else in the CSS needs to change.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الی کترینگ | منوی امروز</title>
+<meta name="description" content="منوی روزانه الی کترینگ؛ غذاهای خانگی تازه، سفارش با تماس تلفنی یا واتساپ.">
+<meta property="og:title" content="الی کترینگ | منوی امروز">
+<meta property="og:description" content="غذاهای روزانه با مواد اولیه تازه و دستورهای خانگی، با عشق برای شما آماده می‌شوند.">
+<meta name="theme-color" content="#556B2F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%23556B2F'/%3E%3Cpath d='M12 5c-2 0-3.4 1.4-3.4 3.1 0 .4.1.8.2 1.1C7.3 9.7 6 11.1 6 12.8c0 .9.4 1.8 1 2.4V18h10v-2.8c.6-.6 1-1.5 1-2.4 0-1.7-1.3-3.1-2.8-3.6.1-.3.2-.7.2-1.1C15.4 6.4 14 5 12 5z' fill='%23F7F3E9'/%3E%3C/svg%3E">
+
+<!-- English fonts: Playfair Display (display) + Poppins (UI) — both used exactly as specified.
+     Persian fonts: the spec calls for Peyda Bold (headings) and IRANSansX (body), which are
+     licensed commercial fonts we don't have files for yet. Vazirmatn (open-source, SIL license)
+     is used as a temporary stand-in with the same warm/rounded character — swap the two
+     @font-face-able families below for the real files and nothing else needs to change. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================
+     DESIGN TOKENS — from spec §3.1 / §3.2. Change once here, not per-selector.
+     ============================ */
+  :root {
+    --color-primary-green: #556B2F;
+    --color-primary-green-dark: #46592680;
+    --color-bg: #F7F3E9;
+    --color-brown: #A67C52;
+    --color-charcoal: #2F2F2F;
+    --color-light-green: #D8E2C4;
+    --color-white: #FFFFFF;
+
+    --font-fa-display: 'Vazirmatn', 'Peyda', sans-serif; /* stand-in for Peyda Bold */
+    --font-fa-body: 'Vazirmatn', 'IRANSansX', sans-serif; /* stand-in for IRANSansX */
+    --font-en-display: 'Playfair Display', serif;
+    --font-en-body: 'Poppins', sans-serif;
+
+    --radius-sm: 10px;
+    --radius-md: 20px;
+    --radius-full: 999px;
+
+    --space-1: .5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2.25rem;
+    --space-5: 3.5rem;
+    --space-6: 5rem;
+
+    --container: 1180px;
+    --shadow-soft: 0 10px 30px rgba(47, 47, 47, .08);
+    --shadow-btn: 0 6px 16px rgba(85, 107, 47, .28);
+
+    --ease: cubic-bezier(.4, 0, .2, 1);
+  }
+
+  /* ============================
+     RESET & BASE
+     ============================ */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-charcoal);
+    font-family: var(--font-fa-body);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  a { color: inherit; text-decoration: none; }
+  h1, h2, h3, p { margin: 0; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  .icon { width: 1.25em; height: 1.25em; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2.5px solid var(--color-brown);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
+
+  .container { max-width: var(--container); margin-inline: auto; padding-inline: var(--space-3); }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .en { font-family: var(--font-en-body); direction: ltr; unicode-bidi: isolate; }
+
+
+  /* ============================
+     BUTTONS
+     ============================ */
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .85rem 1.6rem; border-radius: var(--radius-full);
+    font-family: var(--font-fa-body); font-weight: 600; font-size: .95rem;
+    transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+    white-space: nowrap;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn--primary { background: var(--color-primary-green); color: var(--color-white); box-shadow: var(--shadow-btn); }
+  .btn--primary:hover { box-shadow: 0 10px 22px rgba(85, 107, 47, .38); }
+  .btn--outline { background: var(--color-white); color: var(--color-primary-green); border: 1.5px solid var(--color-light-green); }
+  .btn--outline:hover { border-color: var(--color-primary-green); }
+  .btn--sm { padding: .6rem 1.2rem; font-size: .85rem; }
+
+  /* ============================
+     SITE HEADER  — §7.2, §8.1
+     Logo stays physically left / actions stay physically right, per the spec's explicit
+     instruction not to mechanically mirror this element for RTL. Achieved with
+     row-reverse rather than fighting the language direction.
+     ============================ */
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(247, 243, 233, .92); backdrop-filter: blur(8px);
+    border-block-end: 1px solid rgba(85, 107, 47, .1);
+  }
+  .header-container {
+    max-width: var(--container); margin-inline: auto; padding-inline: var(--space-3);
+    display: flex; flex-direction: row-reverse; align-items: center; justify-content: space-between;
+    min-height: 76px; gap: var(--space-3);
+  }
+  .brand { display: flex; align-items: center; gap: .6rem; }
+  .logo { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; }
+  .brand-wordmark { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-wordmark strong { font-family: var(--font-en-display); font-style: italic; font-size: 1.15rem; color: var(--color-primary-green); }
+  .brand-wordmark span { font-family: var(--font-en-body); font-size: .55rem; letter-spacing: .18em; color: var(--color-brown); }
+
+  .primary-navigation { display: flex; align-items: center; gap: var(--space-4); }
+  .nav-link { font-size: .95rem; font-weight: 500; color: var(--color-charcoal); padding-block: .35rem; border-block-end: 2px solid transparent; transition: color .15s var(--ease), border-color .15s var(--ease); }
+  .nav-link:hover { color: var(--color-primary-green); }
+  .nav-link--active { color: var(--color-primary-green); border-block-end-color: var(--color-primary-green); font-weight: 600; }
+
+  .header-actions .phone-order-button .icon { width: 1.05em; height: 1.05em; }
+  .nav-toggle { display: none; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: var(--radius-sm); }
+  .nav-toggle .icon { width: 22px; height: 22px; }
+  .nav-toggle .icon-close { display: none; }
+  .nav-toggle[aria-expanded="true"] .icon-menu { display: none; }
+  .nav-toggle[aria-expanded="true"] .icon-close { display: block; }
+
+  .mobile-nav-panel { display: none; }
+
+  @media (max-width: 860px) {
+    .primary-navigation, .header-actions .phone-order-button { display: none; }
+    .nav-toggle { display: inline-flex; }
+    .mobile-nav-panel {
+      display: block; max-height: 0; overflow: hidden; background: var(--color-bg);
+      border-block-end: 1px solid rgba(85, 107, 47, .12);
+      transition: max-height .28s var(--ease);
+    }
+    .mobile-nav-panel.is-open { max-height: 320px; }
+    .mobile-nav-panel .container { display: flex; flex-direction: column; gap: var(--space-2); padding-block: var(--space-3); }
+    .mobile-nav-panel .nav-link { border-block-end: none; }
+    .mobile-nav-panel .phone-order-button { align-self: flex-start; margin-block-start: .3rem; }
+  }
+
+  /* ============================
+     HERO — §7.2, §8.2
+     Same left/right override as the header: hero-media first in the DOM, pinned left
+     with row-reverse, hero-content pinned right.
+     ============================ */
+  .hero-section { padding-block: var(--space-6) var(--space-5); position: relative; overflow: hidden; }
+  .hero-section::before {
+    content: ""; position: absolute; inset-inline-end: -120px; inset-block-start: -80px;
+    width: 340px; height: 340px; border-radius: 50%;
+    background: radial-gradient(circle, var(--color-light-green) 0%, transparent 70%);
+    opacity: .6; z-index: 0;
+  }
+  .hero-container {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: row-reverse; align-items: center; gap: var(--space-5);
+  }
+  .hero-media { flex: 1 1 46%; min-width: 0; }
+  .hero-image {
+    position: relative; aspect-ratio: 4 / 3.1; border-radius: var(--radius-md);
+    background:
+      radial-gradient(circle at 32% 30%, #ffffffaa 0%, transparent 45%),
+      linear-gradient(135deg, var(--color-light-green) 0%, var(--color-bg) 55%, var(--color-brown) 130%);
+    box-shadow: var(--shadow-soft);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-image .icon { width: 30%; height: 30%; stroke: var(--color-primary-green); opacity: .55; stroke-width: 1.2; }
+
+  .hero-content { flex: 1 1 50%; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); text-align: right; }
+  .hero-title {
+    font-family: var(--font-fa-display); font-weight: 800; color: var(--color-primary-green);
+    font-size: 2.6rem; line-height: 1.28;
+    max-width: 12ch; overflow-wrap: break-word;
+  }
+  @media (max-width: 1180px) { .hero-title { font-size: 2.1rem; } }
+  @media (max-width: 860px) { .hero-title { font-size: 1.9rem; max-width: 16ch; } }
+  .hero-description { font-size: 1.05rem; color: #4a4a44; max-width: 34ch; }
+  .hero-cta { margin-block-start: var(--space-2); }
+
+  @media (max-width: 860px) {
+    .hero-container { flex-direction: column-reverse; text-align: center; }
+    .hero-content { align-items: center; }
+    .hero-media { width: 100%; }
+  }
+
+  /* ============================
+     MENU SECTION — §7.2, §8.3, §8.4
+     Natural RTL flow (no row-reverse): first DOM child sits at the visual *right*,
+     which is exactly what's wanted — thumbnail right, name next to it, price at the
+     far left, with a dotted CSS leader line between them (no literal dot characters).
+     ============================ */
+  .menu-section { padding-block: var(--space-5); }
+  .section-heading-row { display: flex; align-items: center; justify-content: center; gap: var(--space-2); margin-block-end: var(--space-4); }
+  .section-heading-row .icon { width: 20px; height: 20px; stroke: var(--color-brown); }
+  .section-heading {
+    font-family: var(--font-fa-display); font-weight: 800; font-size: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+    color: var(--color-primary-green); text-align: center;
+  }
+
+  .menu-list { max-width: 760px; margin-inline: auto; display: flex; flex-direction: column; gap: .9rem; }
+  .menu-item {
+    display: flex; align-items: center; gap: var(--space-2);
+    background: var(--color-white); border-radius: var(--radius-md);
+    padding: .75rem 1.1rem; box-shadow: var(--shadow-soft);
+  }
+  .menu-item__image {
+    position: relative; width: 60px; height: 60px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(150deg, var(--color-light-green), var(--color-bg));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .menu-item__image .icon { width: 44%; height: 44%; stroke: var(--color-brown); stroke-width: 1.4; }
+  .menu-item__content { flex: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem .6rem; min-width: 0; }
+  .menu-item__name { font-weight: 600; font-size: 1.02rem; white-space: nowrap; }
+  .menu-item__separator { flex: 1; border-block-end: 2px dotted var(--color-light-green); margin-block-end: .3rem; min-width: 1rem; }
+  .menu-item__price { font-family: var(--font-fa-body); font-weight: 600; color: var(--color-primary-green); white-space: nowrap; font-size: .98rem; }
+  .menu-item__price .en { font-weight: 600; }
+
+  .menu-item--unavailable { opacity: .55; }
+  .menu-item--unavailable .menu-item__image { filter: grayscale(60%); }
+  .menu-item__unavailable-tag {
+    font-size: .7rem; font-weight: 700; color: var(--color-brown);
+    border: 1px solid var(--color-brown); border-radius: var(--radius-full);
+    padding: .1rem .55rem; white-space: nowrap;
+  }
+
+  .menu-hours {
+    display: flex; align-items: center; justify-content: center; gap: .45rem;
+    margin-block-start: var(--space-3); font-size: .88rem; color: var(--color-brown);
+  }
+  .menu-hours .icon { width: 16px; height: 16px; }
+
+  @media (max-width: 480px) {
+    .menu-item { flex-wrap: wrap; }
+    .menu-item__content { flex-basis: 100%; }
+  }
+
+  /* ============================
+     ORDERING SECTION — §7.2, §8.5
+     ============================ */
+  .ordering-section { padding-block: var(--space-4); }
+  .ordering-section .container {
+    max-width: 760px; background: var(--color-white); border: 1px solid var(--color-light-green);
+    border-radius: var(--radius-md); padding: var(--space-4); text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: .6rem;
+  }
+  .ordering-section .section-heading-row { margin-block-end: 0; }
+  .order-description { color: #4a4a44; max-width: 42ch; }
+  .order-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); margin-block-start: var(--space-2); }
+
+  /* ============================
+     BENEFITS SECTION — §7.2, §8.6, updated per supplied "آیکون‌های برند" reference
+     ============================ */
+  .benefits-section { padding-block: var(--space-5); }
+  .benefits-card {
+    max-width: var(--container); margin-inline: auto;
+    background: var(--color-white); border: 1px solid var(--color-light-green);
+    border-radius: var(--radius-md); padding: var(--space-4) var(--space-3);
+  }
+  .benefits-list {
+    display: flex; flex-wrap: wrap;
+  }
+  .benefit-item {
+    flex: 1 1 20%; min-width: 0;
+    display: flex; flex-direction: column; align-items: center; gap: .6rem;
+    padding: 0 var(--space-2); text-align: center;
+    border-inline-start: 1px solid var(--color-light-green);
+  }
+  .benefit-item:first-child { border-inline-start: none; }
+  .benefit-item .icon-wrap {
+    width: 52px; height: 52px; border-radius: 50%; background: var(--color-light-green);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .benefit-item .icon { width: 24px; height: 24px; stroke: var(--color-primary-green); }
+  .benefit-item p { font-size: .88rem; font-weight: 500; line-height: 1.6; }
+
+  @media (max-width: 860px) {
+    .benefits-list { row-gap: var(--space-3); }
+    .benefit-item { flex-basis: 33.33%; border-inline-start: none; }
+  }
+  @media (max-width: 480px) {
+    .benefit-item { flex-basis: 100%; }
+  }
+
+  /* ============================
+     FOOTER — §7.2, §8.7
+     ============================ */
+  .site-footer { background: var(--color-primary-green); color: var(--color-bg); margin-block-start: var(--space-5); position: relative; overflow: hidden; }
+  .footer-container {
+    max-width: var(--container); margin-inline: auto; padding: var(--space-5) var(--space-3);
+    display: flex; flex-wrap: wrap; gap: var(--space-4); justify-content: space-between;
+    position: relative; z-index: 1;
+  }
+  .footer-qr { display: flex; align-items: center; gap: .8rem; }
+  .footer-qr__code {
+    width: 76px; height: 76px; border-radius: var(--radius-sm); background: var(--color-bg);
+    padding: 8px; flex-shrink: 0;
+  }
+  .footer-qr__code svg { width: 100%; height: 100%; }
+  .footer-qr p { font-size: .82rem; max-width: 16ch; opacity: .9; }
+
+  .footer-contact { display: flex; flex-direction: column; gap: .5rem; }
+  .footer-contact__phone { display: flex; align-items: center; gap: .5rem; font-weight: 600; font-family: var(--font-fa-body); }
+  .footer-contact__phone .icon { width: 18px; height: 18px; }
+  .footer-contact p { font-size: .82rem; opacity: .85; max-width: 28ch; }
+
+  .footer-social { display: flex; flex-direction: column; gap: .6rem; }
+  .footer-social__title { font-weight: 600; font-size: .9rem; }
+  .footer-social a { display: flex; align-items: center; gap: .5rem; font-size: .85rem; opacity: .92; }
+  .footer-social a:hover { opacity: 1; text-decoration: underline; }
+  .footer-social .icon { width: 17px; height: 17px; }
+
+  .footer-decoration { position: absolute; inset-inline-start: -30px; inset-block-end: -30px; opacity: .18; pointer-events: none; z-index: 0; }
+  .footer-decoration .icon { width: 180px; height: 180px; stroke: var(--color-bg); stroke-width: 1; }
+
+  .footer-bottom { border-block-start: 1px solid rgba(247, 243, 233, .18); text-align: center; padding: var(--space-2); font-size: .75rem; opacity: .75; position: relative; z-index: 1; }
+
+  @media (max-width: 700px) {
+    .footer-container { flex-direction: column; text-align: center; }
+    .footer-qr, .footer-social a { justify-content: center; }
+    .footer-contact { align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Reusable icon sprite — defined once, referenced with <use> throughout (keeps markup DRY). -->
+<svg style="display:none" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M4 4.5c0-.8.6-1.5 1.4-1.5H8l1.8 4.5-2 1.6a12.3 12.3 0 0 0 6.1 6.1l1.6-2 4.5 1.8v2.6c0 .8-.7 1.4-1.5 1.4C10.6 19 5 13.4 4 6z"/></symbol>
+  <symbol id="icon-whatsapp" viewBox="0 0 24 24"><path d="M6.5 17.5 4 20l2.6-.7A8 8 0 1 0 4 12a8 8 0 0 0 2.5 5.5Z"/><path d="M9 9.6c0 3 2.4 5.4 5.4 5.4.4 0 .8-.4.8-.9v-.9l-2-1-1 1a6 6 0 0 1-2.4-2.4l1-1-1-2h-.9c-.5 0-.9.4-.9.8Z"/></symbol>
+  <symbol id="icon-instagram" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-cloche" viewBox="0 0 24 24"><path d="M4 16.5a8 8 0 0 1 16 0"/><line x1="2.5" y1="16.5" x2="21.5" y2="16.5"/><line x1="6" y1="19.5" x2="18" y2="19.5"/><path d="M10.5 5.2c-1.1.5-1.1 1.6 0 2.1" stroke-width="1.3"/><path d="M13.3 4.6c-1.1.5-1.1 1.6 0 2.1" stroke-width="1.3"/></symbol>
+  <symbol id="icon-leaf" viewBox="0 0 24 24"><path d="M20 4C10 4 4 10 4 18c0 .6.4 1 1 1 8 0 14-6 14-15 0-.6-.4-1-1-1Z"/><path d="M6 18c3-4 7-7 12-9"/></symbol>
+  <symbol id="icon-chef-hat" viewBox="0 0 24 24"><path d="M12 3c-2 0-3.4 1.4-3.4 3.1 0 .4.1.8.2 1.1C7.3 7.7 6 9.1 6 10.8c0 .9.4 1.8 1 2.4V17h10v-3.8c.6-.6 1-1.5 1-2.4 0-1.7-1.3-3.1-2.8-3.6.1-.3.2-.7.2-1.1C15.4 4.4 14 3 12 3Z"/><line x1="6" y1="19.5" x2="18" y2="19.5"/></symbol>
+  <symbol id="icon-house-heart" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v7.5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><path d="M12 16.8s-2.8-1.7-2.8-3.5a1.6 1.6 0 0 1 2.8-1 1.6 1.6 0 0 1 2.8 1c0 1.8-2.8 3.5-2.8 3.5Z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="icon-shield-check" viewBox="0 0 24 24"><path d="M12 3.3 18.5 5.8v5.3c0 4.7-2.8 7.6-6.5 8.6-3.7-1-6.5-3.9-6.5-8.6V5.8z"/><path d="M8.7 12l2.3 2.3 4.5-4.6"/></symbol>
+  <symbol id="icon-clock-fast" viewBox="0 0 24 24"><circle cx="14.5" cy="12" r="7"/><path d="M14.5 8.2v4l2.8 1.8"/><line x1="1.5" y1="9" x2="5" y2="9"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="1.5" y1="15" x2="5" y2="15"/></symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></symbol>
+  <symbol id="icon-plate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/></symbol>
+  <symbol id="icon-branch" viewBox="0 0 100 100"><path d="M10 90C10 50 40 20 90 10" stroke-width="1.5"/><path d="M25 75c8-4 14-10 16-18M42 58c8-3 14-8 17-15M60 42c7-3 12-7 15-13" stroke-width="1.5"/></symbol>
+</svg>
+
+<header class="site-header">
+  <div class="header-container">
+    <!-- EDIT: logo — replace this placeholder badge with the real logo file -->
+    <a class="brand" href="#top" aria-label="الی کترینگ — بازگشت به ابتدای صفحه">
+      <svg class="logo" viewBox="0 0 44 44" role="img" aria-hidden="true">
+        <circle cx="22" cy="22" r="21" fill="none" stroke="#556B2F" stroke-width="1.4"/>
+        <use href="#icon-chef-hat" xlink:href="#icon-chef-hat" x="12" y="10" width="20" height="20" style="stroke:#556B2F; fill:none; stroke-width:1.4"/>
+      </svg>
+      <span class="brand-wordmark"><strong class="en">Eli</strong><span class="en">CATERING</span></span>
+    </a>
+
+    <nav class="primary-navigation" id="primary-navigation" aria-label="ناوبری اصلی">
+      <a class="nav-link nav-link--active" href="#top">خانه</a>
+      <a class="nav-link" href="#menu">منوی امروز</a>
+      <a class="nav-link" href="#about">درباره ما</a>
+      <a class="nav-link" href="#contact">تماس با ما</a>
+    </nav>
+
+    <div class="header-actions">
+      <!-- EDIT: phone --><a class="phone-order-button btn btn--primary btn--sm" href="tel:+989120000000">
+        <svg class="icon" aria-hidden="true"><use href="#icon-phone" xlink:href="#icon-phone"/></svg>
+        سفارش تلفنی
+      </a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileNavPanel" aria-label="باز کردن منوی ناوبری">
+      <svg class="icon icon-menu" aria-hidden="true"><use href="#icon-menu" xlink:href="#icon-menu"/></svg>
+      <svg class="icon icon-close" aria-hidden="true"><use href="#icon-close" xlink:href="#icon-close"/></svg>
+    </button>
+  </div>
+
+  <div class="mobile-nav-panel" id="mobileNavPanel">
+    <div class="container">
+      <a class="nav-link nav-link--active" href="#top">خانه</a>
+      <a class="nav-link" href="#menu">منوی امروز</a>
+      <a class="nav-link" href="#about">درباره ما</a>
+      <a class="nav-link" href="#contact">تماس با ما</a>
+      <!-- EDIT: phone --><a class="phone-order-button btn btn--primary btn--sm" href="tel:+989120000000">
+        <svg class="icon" aria-hidden="true"><use href="#icon-phone" xlink:href="#icon-phone"/></svg>
+        سفارش تلفنی
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero-section" aria-label="معرفی">
+    <div class="container hero-container">
+      <div class="hero-media">
+        <div class="hero-image">
+          <svg class="icon" aria-hidden="true"><use href="#icon-plate" xlink:href="#icon-plate"/></svg>
+          <!-- EDIT: hero photo — replace this placeholder gradient with the real hero photograph -->
+        </div>
+      </div>
+      <div class="hero-content">
+        <h1 class="hero-title">طعم غذای خونگی، هر روز</h1>
+        <p class="hero-description">غذاهای روزانه با مواد اولیه تازه و دستورهای خانگی، با عشق برای شما آماده می‌شوند.</p>
+        <a class="hero-cta btn btn--primary" href="#menu">
+          <svg class="icon" aria-hidden="true"><use href="#icon-leaf" xlink:href="#icon-leaf"/></svg>
+          مشاهده منوی امروز
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="menu-section" id="menu" aria-labelledby="menu-heading">
+    <div class="container">
+      <div class="section-heading-row">
+        <svg class="icon" aria-hidden="true"><use href="#icon-leaf" xlink:href="#icon-leaf"/></svg>
+        <h2 class="section-heading" id="menu-heading">منوی امروز</h2>
+        <svg class="icon" aria-hidden="true" style="transform:scaleX(-1)"><use href="#icon-leaf" xlink:href="#icon-leaf"/></svg>
+      </div>
+
+      <ul class="menu-list">
+        <li class="menu-item">
+          <!-- EDIT: menu photo --><div class="menu-item__image"><svg class="icon" aria-hidden="true"><use href="#icon-plate" xlink:href="#icon-plate"/></svg></div>
+          <div class="menu-item__content">
+            <span class="menu-item__name">زرشک پلو با مرغ</span>
+            <span class="menu-item__separator" aria-hidden="true"></span>
+            <span class="menu-item__price"><span class="en">۲۸۰,۰۰۰</span> تومان</span>
+          </div>
+        </li>
+        <li class="menu-item">
+          <!-- EDIT: menu photo --><div class="menu-item__image"><svg class="icon" aria-hidden="true"><use href="#icon-plate" xlink:href="#icon-plate"/></svg></div>
+          <div class="menu-item__content">
+            <span class="menu-item__name">قورمه سبزی</span>
+            <span class="menu-item__separator" aria-hidden="true"></span>
+            <span class="menu-item__price"><span class="en">۲۶۰,۰۰۰</span> تومان</span>
+          </div>
+        </li>
+        <li class="menu-item">
+          <!-- EDIT: menu photo --><div class="menu-item__image"><svg class="icon" aria-hidden="true"><use href="#icon-plate" xlink:href="#icon-plate"/></svg></div>
+          <div class="menu-item__content">
+            <span class="menu-item__name">جوجه کباب</span>
+            <span class="menu-item__separator" aria-hidden="true"></span>
+            <span class="menu-item__price"><span class="en">۳۰۰,۰۰۰</span> تومان</span>
+          </div>
+        </li>
+        <li class="menu-item">
+          <!-- EDIT: menu photo --><div class="menu-item__image"><svg class="icon" aria-hidden="true"><use href="#icon-plate" xlink:href="#icon-plate"/></svg></div>
+          <div class="menu-item__content">
+            <span class="menu-item__name">سالاد فصل</span>
+            <span class="menu-item__separator" aria-hidden="true"></span>
+            <span class="menu-item__price"><span class="en">۶۰,۰۰۰</span> تومان</span>
+          </div>
+        </li>
+        <li class="menu-item menu-item--unavailable">
+          <!-- EDIT: menu photo --><div class="menu-item__image"><svg class="icon" aria-hidden="true"><use href="#icon-plate" xlink:href="#icon-plate"/></svg></div>
+          <div class="menu-item__content">
+            <span class="menu-item__name">دوغ</span>
+            <span class="menu-item__unavailable-tag">ناموجود</span>
+            <span class="menu-item__separator" aria-hidden="true"></span>
+            <span class="menu-item__price"><span class="en">۲۵,۰۰۰</span> تومان</span>
+          </div>
+        </li>
+      </ul>
+
+      <!-- EDIT: hours --><p class="menu-hours">
+        <svg class="icon" aria-hidden="true"><use href="#icon-clock" xlink:href="#icon-clock"/></svg>
+        ساعت سفارش: ۱۰ صبح تا ۲ بعدازظهر
+      </p>
+    </div>
+  </section>
+
+  <section class="ordering-section" id="contact" aria-labelledby="order-heading">
+    <div class="container">
+      <div class="section-heading-row">
+        <svg class="icon" aria-hidden="true"><use href="#icon-leaf" xlink:href="#icon-leaf"/></svg>
+        <h2 class="section-heading" id="order-heading">سفارش آسان</h2>
+      </div>
+      <p class="order-description">سفارش خود را از طریق واتساپ یا تماس تلفنی ثبت کنید</p>
+      <div class="order-actions">
+        <!-- EDIT: whatsapp --><a class="whatsapp-order-button btn btn--primary" href="https://wa.me/989120000000" target="_blank" rel="noopener">
+          <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp" xlink:href="#icon-whatsapp"/></svg>
+          سفارش از واتساپ
+        </a>
+        <!-- EDIT: phone --><a class="phone-order-button btn btn--outline" href="tel:+989120000000">
+          <svg class="icon" aria-hidden="true"><use href="#icon-phone" xlink:href="#icon-phone"/></svg>
+          تماس تلفنی
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="benefits-section" id="about" aria-label="ویژگی‌های ما">
+    <div class="container">
+      <div class="benefits-card">
+        <ul class="benefits-list">
+          <li class="benefit-item">
+            <span class="icon-wrap"><svg class="icon" aria-hidden="true"><use href="#icon-cloche" xlink:href="#icon-cloche"/></svg></span>
+            <p>غذای تازه</p>
+          </li>
+          <li class="benefit-item">
+            <span class="icon-wrap"><svg class="icon" aria-hidden="true"><use href="#icon-leaf" xlink:href="#icon-leaf"/></svg></span>
+            <p>مواد اولیه با کیفیت</p>
+          </li>
+          <li class="benefit-item">
+            <span class="icon-wrap"><svg class="icon" aria-hidden="true"><use href="#icon-house-heart" xlink:href="#icon-house-heart"/></svg></span>
+            <p>غذای خانگی با عشق</p>
+          </li>
+          <li class="benefit-item">
+            <span class="icon-wrap"><svg class="icon" aria-hidden="true"><use href="#icon-shield-check" xlink:href="#icon-shield-check"/></svg></span>
+            <p>بهداشتی و قابل اعتماد</p>
+          </li>
+          <li class="benefit-item">
+            <span class="icon-wrap"><svg class="icon" aria-hidden="true"><use href="#icon-clock-fast" xlink:href="#icon-clock-fast"/></svg></span>
+            <p>تحویل سریع</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-qr">
+      <!-- EDIT: qr --><div class="footer-qr__code">
+        <!-- Decorative placeholder pattern, not a scannable code — generate the real one once the production URL is known. -->
+        <svg viewBox="0 0 10 10" aria-hidden="true">
+          <rect width="10" height="10" fill="#F7F3E9"/>
+          <g fill="#2F2F2F">
+            <rect x="0" y="0" width="3" height="3"/><rect x="1" y="1" width="1" height="1" fill="#F7F3E9"/>
+            <rect x="7" y="0" width="3" height="3"/><rect x="8" y="1" width="1" height="1" fill="#F7F3E9"/>
+            <rect x="0" y="7" width="3" height="3"/><rect x="1" y="8" width="1" height="1" fill="#F7F3E9"/>
+            <rect x="4" y="0" width="1" height="1"/><rect x="4" y="4" width="2" height="2"/>
+            <rect x="7" y="4" width="1" height="1"/><rect x="4" y="7" width="1" height="1"/>
+            <rect x="6" y="6" width="1" height="1"/><rect x="8" y="8" width="2" height="1"/>
+            <rect x="4" y="9" width="1" height="1"/><rect x="6" y="8" width="1" height="2"/>
+          </g>
+        </svg>
+      </div>
+      <p>برای مشاهده منو اسکن کنید</p>
+    </div>
+
+    <div class="footer-contact">
+      <!-- EDIT: phone --><span class="footer-contact__phone">
+        <svg class="icon" aria-hidden="true"><use href="#icon-phone" xlink:href="#icon-phone"/></svg>
+        <span class="en" dir="ltr">0912 000 0000</span>
+      </span>
+      <p>هر روز با منوی متنوع و طعمی به‌یاد ماندنی</p>
+    </div>
+
+    <div class="footer-social">
+      <span class="footer-social__title">ما را دنبال کنید</span>
+      <!-- EDIT: instagram — replace href="#" with the real profile URL --><a href="#" target="_blank" rel="noopener">
+        <svg class="icon" aria-hidden="true"><use href="#icon-instagram" xlink:href="#icon-instagram"/></svg>
+        <span class="en" dir="ltr">@eli.catering</span>
+      </a>
+      <!-- EDIT: whatsapp --><a href="https://wa.me/989120000000" target="_blank" rel="noopener">
+        <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp" xlink:href="#icon-whatsapp"/></svg>
+        واتساپ
+      </a>
+    </div>
+
+    <div class="footer-decoration" aria-hidden="true">
+      <svg class="icon" viewBox="0 0 100 100"><use href="#icon-branch" xlink:href="#icon-branch"/></svg>
+    </div>
+  </div>
+  <div class="footer-bottom">© <span class="en">2026</span> Eli Catering — تمامی حقوق محفوظ است</div>
+</footer>
+
+<script>
+  (function () {
+    var toggle = document.getElementById('navToggle');
+    var panel = document.getElementById('mobileNavPanel');
+    if (!toggle || !panel) return;
+
+    function closePanel() {
+      panel.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+    function togglePanel() {
+      var isOpen = panel.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
+    }
+
+    toggle.addEventListener('click', togglePanel);
+    panel.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', closePanel);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closePanel();
+    });
+  })();
+</script>
+
+</body>
+</html>
