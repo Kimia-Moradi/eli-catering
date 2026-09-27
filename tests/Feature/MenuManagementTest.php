@@ -24,7 +24,11 @@ class MenuManagementTest extends TestCase
 
         $this->actingAs($this->admin())->get('/admin/menus/2026-12-25')->assertOk();
 
-        $this->assertDatabaseHas('menus', ['menu_date' => '2026-12-25', 'is_active' => false]);
+        $menu = Menu::first();
+
+$this->assertNotNull($menu);
+$this->assertSame('2026-12-25', $menu->menu_date->toDateString());
+$this->assertFalse($menu->is_active);
     }
 
     public function test_the_date_query_string_is_accepted_as_a_fallback_for_the_date_picker_form(): void
